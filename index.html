@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>太鼓の達人 称号メーカー</title>
+  <meta name="description" content="太鼓の達人の称号メーカーです🥁">
+  <meta name="theme-color" content="#121212">
+  <link rel="icon" href="./images/meta/favicon.png" type="image/png"/>
+  <meta property="og:title" content="太鼓の達人 称号メーカー">
+  <meta property="og:description" content="太鼓の達人の称号を自由に作成できるツールです🥁">
+  <meta property="og:image" content="https://veda0013391.github.io/TitleMaker/images/meta/img.jpg">
+  <meta property="og:url" content="https://veda0013391.github.io/TitleMaker/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <h1>太鼓の達人称号メーカー</h1>
+    <p class="sub-title">称号画像作成ツール</p>
+  </header>
+
+  <main>
+    <!-- 生成結果プレビュー -->
+    <div class="canvas-area">
+      <div class="canvas-container">
+        <canvas id="canvas" width="556" height="117"></canvas>
+      </div>
+    </div>
+
+    <!-- 入力フォーム -->
+    <form id="inputForm">
+      <div class="form-group">
+        <label for="title">称号</label>
+        <input type="text" id="title" maxlength="30" placeholder="称号を入力してください" />
+      </div>
+
+      <div class="form-group">
+        <label for="name">プレイヤー名</label>
+        <input type="text" id="name" maxlength="10" placeholder="名前を入力してください" />
+      </div>
+
+      <!-- プレート -->
+      <div class="form-group">
+        <label for="type">称号プレート</label>
+        <select id="type">
+          <option value="gold">金称号</option>
+          <option value="rainbow">虹称号</option>
+          <option value="purple">紫称号</option>
+          <option value="wood">木称号</option>
+          <option value="donderful">全良称号(おに)</option>
+          <option value="full">フルコン称号(おに)</option>
+          <option value="clear">クリア称号(おに)</option>
+          <option value="donderful-e" selected>全良称号(裏)</option>
+          <option value="full-e">フルコン称号(裏)</option>
+          <option value="clear-e">クリア称号(裏)</option>
+          <option value="g-ga">外伝(銀枠赤合格)</option>
+          <option value="g-gk">外伝(銀枠金合格)</option>
+          <!-- <option value="g-kk">外伝(金枠金合格)</option>
+          <option value="g-nk">外伝(虹枠金合格)</option>
+          <option value="dem">デウス・エクス・マキナ</option> -->
+          <option value="yami">闇のドンチャレ</option>
+          <option value="25th">25th記念</option>
+          <option value="twso-24">TWSO'24 参加</option>
+          <option value="twso-25">TWSO'25 参加</option>
+          <option value="none-1">未設定(1P)</option>
+          <option value="none-2">未設定(2P)</option>
+        </select>
+      </div>
+
+      <div class="form-group toggle-row">
+        <label for="danToggle">段位を表示する</label>
+        <label class="switch">
+          <input type="checkbox" id="danToggle" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <!-- 段位表示 -->
+      <div id="danOptions" class="dan-settings">
+        <div class="dan-grid">
+          <div class="option-item">
+            <label>段位</label>
+            <select id="danLevel">
+              <option value="gok">五級</option>
+              <option value="yok">四級</option>
+              <option value="sak">三級</option>
+              <option value="nik">二級</option>
+              <option value="ikk">一級</option>
+              <option value="shd">初段</option>
+              <option value="nid">二段</option>
+              <option value="sad">三段</option>
+              <option value="yod">四段</option>
+              <option value="god">五段</option>
+              <option value="rod">六段</option>
+              <option value="nad">七段</option>
+              <option value="had">八段</option>
+              <option value="kud">九段</option>
+              <option value="jud">十段</option>
+              <option value="clo">玄人</option>
+              <option value="mei">名人</option>
+              <option value="cho">超人</option>
+              <option value="tat">達人</option>
+            </select>
+          </div>
+          <div class="option-item">
+            <label>枠の色</label>
+            <select id="frameColor">
+              <option value="k">金</option>
+              <option value="g">銀</option>
+              <option value="n" selected>虹</option>
+            </select>
+          </div>
+          <div class="option-item">
+            <label>合格</label>
+            <select id="passColor">
+              <option value="k" selected>金</option>
+              <option value="a">赤</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- アクションボタン -->
+      <div class="button-container">
+        <button id="submitButton" type="submit" disabled>生成</button>
+        <button id="downloadButton" type="button" disabled>ダウンロード</button>
+      </div>
+    </form>
+  </main>
+
+  <!-- フッター -->
+  <footer>
+    <p>&copy; 2025 ryo_001339 All rights reserved.</p>
+    <div class="social-links">
+      <a href="https://x.com/ryo_001339" target="_blank">Twitter</a> / 
+      <a href="https://github.com/VEDA0013391/TitleMaker/" target="_blank">GitHub</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
