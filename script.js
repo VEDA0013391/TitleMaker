@@ -7,7 +7,7 @@ const danOptions = document.getElementById('danOptions');
 const form = document.getElementById('inputForm');
 
 const CANVAS_WIDTH = 556;
-const CANVAS_HEIGHT = 117;
+const CANVAS_HEIGHT = 140;
 const TITLE_MAX_FONT = 25;
 const TITLE_MIN_FONT = 14;
 const TITLE_MAX_WIDTH = 440;
@@ -15,9 +15,6 @@ const PLAYER_NAME_FONT = 25;
 
 const FONT_DATAS = [
     ["FOT", "./fonts/fot.otf"],
-    // ["GW", "./fonts/GW.ttf"],
-    // ["Kukde", "./fonts/Kukde.otf"],
-    // ["Russia", "./fonts/EBG.ttf"]
 ];
 
 let isImageDrawn = false;
@@ -37,10 +34,8 @@ Promise.all(
     console.log("Fonts loaded");
 }).catch(err => {
     console.error("Font loading failed:", err);
-    // フォントがなくても操作自体は可能にする場合はここを調整
 });
 
-// 段位オプションの表示切り替え
 danToggle.addEventListener('change', () => {
     danOptions.style.display = danToggle.checked ? 'block' : 'none';
 });
@@ -66,7 +61,6 @@ function drawPlate() {
     
     plateImage.onload = () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        // プレートの描画
         ctx.drawImage(plateImage, 0, CANVAS_HEIGHT - plateImage.height, CANVAS_WIDTH, plateImage.height);
         
         drawTitle(title);
@@ -78,7 +72,7 @@ function drawPlate() {
             enableDownload();
         }
     };
-    plateImage.onerror = () => handleError('プレート画像の読み込みに失敗しました。現在用意できていません');
+    plateImage.onerror = () => handleError('プレート画像の読み込みに失敗しました。\ntwitterで@ryo_001339のDMに連絡お願いします');
     plateImage.src = platePath;
 }
 
@@ -88,7 +82,6 @@ function drawTitle(title) {
     
     ctx.font = `${fontSize}px ${fontStack}`;
     
-    // 幅に収まるまでフォントサイズを下げる
     while (ctx.measureText(title).width > TITLE_MAX_WIDTH && fontSize > TITLE_MIN_FONT) {
         fontSize--;
         ctx.font = `${fontSize}px ${fontStack}`;
@@ -97,7 +90,7 @@ function drawTitle(title) {
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillStyle = "#000";
-    ctx.fillText(title, CANVAS_WIDTH / 2, 50);
+    ctx.fillText(title, CANVAS_WIDTH / 2, 72); 
 }
 
 function drawPlayerName(name, showDan) {
@@ -111,7 +104,7 @@ function drawPlayerName(name, showDan) {
     ctx.miterLimit = 1;
 
     const textWidth = ctx.measureText(name).width;
-    const y = 91.5;
+    const y = 114.5; 
     let x = showDan ? CANVAS_WIDTH * 0.26 : CANVAS_WIDTH / 2;
 
     if (showDan) {
@@ -134,6 +127,7 @@ function drawDanImage() {
         const w = danImage.width * scale;
         const h = danImage.height * scale;
         const x = CANVAS_WIDTH - w - 100;
+        // CANVAS_HEIGHTを基準に計算しているため、自動的に以前より下がります
         const y = CANVAS_HEIGHT - h - 7.5;
         ctx.drawImage(danImage, x, y, w, h);
         enableDownload();

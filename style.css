@@ -48,7 +48,7 @@ main {
 /* キャンバス表示エリア */
 .canvas-area {
   background-color: #000;
-  padding: 15px;
+  padding: 1px;
   border-radius: var(--radius);
   margin-bottom: 20px;
   border: 1px solid #333;
