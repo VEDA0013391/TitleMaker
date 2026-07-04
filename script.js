@@ -15,6 +15,9 @@ const PLAYER_NAME_FONT = 25;
 
 const FONT_DATAS = [
     ["FOT", "./fonts/fot.otf"],
+    ["GW", "./fonts/GW.ttf"],
+    ["Korea", "./fonts/Korea.otf"],
+    ["Russia", "./fonts/EBG.ttf"]
 ];
 
 let isImageDrawn = false;
