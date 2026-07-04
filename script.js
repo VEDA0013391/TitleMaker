@@ -54,16 +54,30 @@ function drawPlate() {
     const type = document.getElementById('type').value;
     const showDan = danToggle.checked;
 
-    if (!title || !name) return alert('称号名とプレイヤー名を入力してください');
+    const isNonePlate = type.startsWith("none-");
 
-    const platePath = showDan ? `./images/plate/dan/${type}.png` : `./images/plate/no-dan/${type}.png`;
+    if (!name) {
+        return alert("プレイヤー名を入力してください");
+    }
+
+    if (!isNonePlate && !title) {
+        return alert("称号名を入力してください");
+    }
+
+    const platePath = showDan
+        ? `./images/plate/dan/${type}.png`
+        : `./images/plate/no-dan/${type}.png`;
+
     const plateImage = new Image();
-    
+
     plateImage.onload = () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(plateImage, 0, CANVAS_HEIGHT - plateImage.height, CANVAS_WIDTH, plateImage.height);
-        
-        drawTitle(title);
+
+        if (title) {
+            drawTitle(title);
+        }
+
         drawPlayerName(name, showDan);
 
         if (showDan) {
@@ -72,7 +86,9 @@ function drawPlate() {
             enableDownload();
         }
     };
-    plateImage.onerror = () => handleError('プレート画像の読み込みに失敗しました。\ntwitterで@ryo_001339のDMに連絡お願いします');
+
+    plateImage.onerror = () =>
+        handleError('プレート画像の読み込みに失敗しました。\ntwitterで@ryo_001339のDMに連絡お願いします');
     plateImage.src = platePath;
 }
 
