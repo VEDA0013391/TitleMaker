@@ -91,7 +91,7 @@ function drawPlate() {
     };
 
     plateImage.onerror = () =>
-        handleError('プレート画像の読み込みに失敗しました。\ntwitterで@ryo_001339のDMに連絡お願いします');
+        handleError('プレート画像の読み込みに失敗しました。\n現在素材探し中です...');
     plateImage.src = platePath;
 }
 
