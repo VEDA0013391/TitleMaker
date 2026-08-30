@@ -28,7 +28,7 @@ canvas.height = CANVAS_HEIGHT;
 
 // フォントの読み込み
 Promise.all(
-    FONT_DATAS.map(([name, path]) => 
+    FONT_DATAS.map(([name, path]) =>
         new FontFace(name, `url(${path})`).load().then(f => document.fonts.add(f))
     )
 ).then(() => {
@@ -45,7 +45,11 @@ danToggle.addEventListener('change', () => {
 
 form.addEventListener('submit', e => {
     e.preventDefault();
-    if (!isFontLoaded) return alert('フォント読込中です。少々お待ちください');
+
+    if (!isFontLoaded) {
+        return alert('フォント読込中です。少々お待ちください');
+    }
+
     drawPlate();
 });
 
@@ -67,41 +71,102 @@ function drawPlate() {
         return alert("称号名を入力してください");
     }
 
-    const platePath = showDan
-        ? `./images/plate/dan/${type}.png`
-        : `./images/plate/no-dan/${type}.png`;
+    // 常にdanをベースにする
+    const platePath = `./images/plate/dan/${type}.png`;
 
     const plateImage = new Image();
 
     plateImage.onload = () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(plateImage, 0, CANVAS_HEIGHT - plateImage.height, CANVAS_WIDTH, plateImage.height);
 
-        if (title) {
-            drawTitle(title);
-        }
+        // プレート本体
+        ctx.drawImage(
+            plateImage,
+            0,
+            CANVAS_HEIGHT - plateImage.height,
+            CANVAS_WIDTH,
+            plateImage.height
+        );
 
-        drawPlayerName(name, showDan);
-
+        // danの場合だけ下半分をdisplay_danで上書き
         if (showDan) {
-            drawDanImage();
+            drawDisplayDan(type, () => {
+                drawPlateContents(title, name, true);
+            });
         } else {
-            enableDownload();
+            drawPlateContents(title, name, false);
         }
     };
 
     plateImage.onerror = () =>
-        handleError('プレート画像の読み込みに失敗しました。\n現在素材探し中です...');
+        handleError(
+            'プレート画像の読み込みに失敗しました。\n現在素材探し中です...'
+        );
+
     plateImage.src = platePath;
+}
+
+function drawDisplayDan(type, callback) {
+    let fileName = 'default.png';
+
+    // 特殊なエフェクトがついてるやつはこっちで判定
+    if (/^clear(?:-e)?$/.test(type)) {
+        fileName = 'clear.png';
+    } else if (/^full(?:-e)?$/.test(type)) {
+        fileName = 'full.png';
+    } else if (/^donderful(?:-e)?$/.test(type)) {
+        fileName = 'donderful.png';
+    } else if (/^g-.*a$/.test(type)) {
+        fileName = 'g-ga.png';
+    } else if (/^g-.*k$/.test(type)) {
+        fileName = 'g-gk.png';
+    }
+
+    const displayDanImage = new Image();
+
+    displayDanImage.onload = () => {
+        ctx.drawImage(
+            displayDanImage,
+            0,
+            CANVAS_HEIGHT - displayDanImage.height
+        );
+
+        callback();
+    };
+
+    displayDanImage.onerror = () => {
+        handleError(
+            `段位表示用の素材 (${fileName}) の読み込みに失敗しました。`
+        );
+    };
+
+    displayDanImage.src = `./images/plate/display_dan/${fileName}`;
+}
+
+function drawPlateContents(title, name, showDan) {
+    if (title) {
+        drawTitle(title);
+    }
+
+    drawPlayerName(name, showDan);
+
+    if (showDan) {
+        drawDanImage();
+    } else {
+        enableDownload();
+    }
 }
 
 function drawTitle(title) {
     let fontSize = TITLE_MAX_FONT;
     const fontStack = getFontStack();
-    
+
     ctx.font = `${fontSize}px ${fontStack}`;
-    
-    while (ctx.measureText(title).width > TITLE_MAX_WIDTH && fontSize > TITLE_MIN_FONT) {
+
+    while (
+        ctx.measureText(title).width > TITLE_MAX_WIDTH &&
+        fontSize > TITLE_MIN_FONT
+    ) {
         fontSize--;
         ctx.font = `${fontSize}px ${fontStack}`;
     }
@@ -109,11 +174,12 @@ function drawTitle(title) {
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillStyle = "#000";
-    ctx.fillText(title, CANVAS_WIDTH / 2, 72); 
+    ctx.fillText(title, CANVAS_WIDTH / 2, 72);
 }
 
 function drawPlayerName(name, showDan) {
     const fontStack = getFontStack();
+
     ctx.font = `${PLAYER_NAME_FONT}px ${fontStack}`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -123,12 +189,18 @@ function drawPlayerName(name, showDan) {
     ctx.miterLimit = 1;
 
     const textWidth = ctx.measureText(name).width;
-    const y = 114.5; 
-    let x = showDan ? CANVAS_WIDTH * 0.26 : CANVAS_WIDTH / 2;
+    const y = 114.5;
+
+    let x = showDan
+        ? CANVAS_WIDTH * 0.26
+        : CANVAS_WIDTH / 2;
 
     if (showDan) {
         const maxWidth = CANVAS_WIDTH / 2 - 20;
-        if (textWidth > maxWidth) x -= (textWidth - maxWidth) / 2;
+
+        if (textWidth > maxWidth) {
+            x -= (textWidth - maxWidth) / 2;
+        }
     }
 
     ctx.strokeText(name, x, y);
@@ -139,24 +211,40 @@ function drawDanImage() {
     const danLevel = document.getElementById('danLevel').value;
     const frameColor = document.getElementById('frameColor').value;
     const passColor = document.getElementById('passColor').value;
-    
+
     const danImage = new Image();
+
     danImage.onload = () => {
         const scale = 0.85;
         const w = danImage.width * scale;
         const h = danImage.height * scale;
+
+        // ここは今まで通り
         const x = CANVAS_WIDTH - w - 100;
-        // CANVAS_HEIGHTを基準に計算しているため、自動的に以前より下がります
         const y = CANVAS_HEIGHT - h - 7.5;
-        ctx.drawImage(danImage, x, y, w, h);
+
+        ctx.drawImage(
+            danImage,
+            x,
+            y,
+            w,
+            h
+        );
+
         enableDownload();
     };
-    danImage.onerror = () => handleError('この段位表示は素材がありません。');
-    danImage.src = `./images/dan-i/${danLevel}-${frameColor}${passColor}.png`;
+
+    danImage.onerror = () =>
+        handleError('この段位表示は素材がありません。');
+
+    danImage.src =
+        `./images/dan-i/${danLevel}-${frameColor}${passColor}.png`;
 }
 
 function getFontStack() {
-    return FONT_DATAS.map(([name]) => `'${name}'`).join(', ');
+    return FONT_DATAS
+        .map(([name]) => `'${name}'`)
+        .join(', ');
 }
 
 function enableDownload() {
@@ -166,15 +254,36 @@ function enableDownload() {
 
 function handleError(msg) {
     alert(msg);
+
     isImageDrawn = false;
     downloadButton.disabled = true;
+
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 }
 
+// blobに変換
 function handleDownload() {
-    if (!isImageDrawn) return alert('称号が生成されていません');
-    const link = document.createElement('a');
-    link.download = 'nameplate.png';
-    link.href = canvas.toDataURL();
-    link.click();
+    if (!isImageDrawn) {
+        return alert('称号が生成されていません');
+    }
+
+    canvas.toBlob(blob => {
+        if (!blob) {
+            return alert('画像の生成に失敗しました');
+        }
+
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+
+        link.href = url;
+        link.download = 'nameplate.png';
+
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+
+        setTimeout(() => {
+            URL.revokeObjectURL(url);
+        }, 1000);
+    }, 'image/png');
 }
