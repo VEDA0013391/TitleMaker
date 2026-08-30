@@ -52,10 +52,10 @@
           <option value="rainbow">虹称号</option>
           <option value="purple">紫称号</option>
           <option value="wood">木称号</option>
-          <option value="donderful">全良称号(おに)</option>
+          <option value="donderful" selected>全良称号(おに)</option>
           <option value="full">フルコン称号(おに)</option>
           <option value="clear">クリア称号(おに)</option>
-          <option value="donderful-e" selected>全良称号(裏)</option>
+          <option value="donderful-e">全良称号(裏)</option>
           <option value="full-e">フルコン称号(裏)</option>
           <option value="clear-e">クリア称号(裏)</option>
           <option value="g-ga">外伝(銀枠赤合格)</option>
@@ -94,25 +94,38 @@
           <div class="option-item">
             <label>段位</label>
             <select id="danLevel">
-              <option value="gok">五級</option>
-              <option value="yok">四級</option>
-              <option value="sak">三級</option>
-              <option value="nik">二級</option>
-              <option value="ikk">一級</option>
-              <option value="shd">初段</option>
-              <option value="nid">二段</option>
-              <option value="sad">三段</option>
-              <option value="yod">四段</option>
-              <option value="god">五段</option>
-              <option value="rod">六段</option>
-              <option value="nad">七段</option>
-              <option value="had">八段</option>
-              <option value="kud">九段</option>
-              <option value="jud">十段</option>
-              <!-- <option value="clo">玄人</option>
-              <option value="mei">名人</option>
-              <option value="cho">超人</option>
-              <option value="tat">達人</option> -->
+              <optgroup label="- 級位 -">
+                <option value="gok">五級</option>
+                <option value="yok">四級</option>
+                <option value="sak">三級</option>
+                <option value="nik">二級</option>
+                <option value="ikk">一級</option>
+              </optgroup>
+
+              <optgroup label="- 青段位 -">
+                <option value="shd">初段</option>
+                <option value="nid">二段</option>
+                <option value="sad">三段</option>
+                <option value="yod">四段</option>
+                <option value="god">五段</option>
+              </optgroup>
+
+              <optgroup label="- 赤段位 -">
+                <option value="rod">六段</option>
+                <option value="nad">七段</option>
+                <option value="had">八段</option>
+                <option value="kud">九段</option>
+                <option value="jud">十段</option>
+              </optgroup>
+
+              <!-- 
+              <optgroup label="- 人段位 -">
+                <option value="clo">玄人</option>
+                <option value="mei">名人</option>
+                <option value="cho">超人</option>
+                <option value="tat">達人</option>
+              </optgroup>
+               -->
             </select>
           </div>
           <div class="option-item">
