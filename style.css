@@ -5,6 +5,7 @@
   --text-white: #ffffff;
   --text-dim: #a0a0a0;
   --accent-red: #ff4b2b;
+  --accent-green: #00ff7f;
   --btn-gray: #3a3a3a;
   --radius: 12px;
 }
@@ -146,8 +147,8 @@ button:active { transform: scale(0.98); }
 }
 
 #downloadButton {
-  background-color: var(--btn-gray);
-  color: white;
+  background-color: var(--accent-green);
+  color: black;
 }
 
 button:disabled {
